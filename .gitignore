@@ -1,0 +1,5 @@
+.terraform
+*.tf
+.DS_Store
+*tfstate*
+terraform-provider-sqlserver
