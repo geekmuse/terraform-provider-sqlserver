@@ -73,12 +73,12 @@ func resourceDatabase() *schema.Resource {
 
 func resourceDatabaseCreate(d *schema.ResourceData, meta interface{}) error {
 	db, err := connectToMSSQL(meta.(*MSSQLConfiguration))
-	var opts []string
 	if err != nil {
 		return err
 	}
 
 	var stmt strings.Builder
+	var opts []string
 	var hasOptions bool
 	hasOptions = false
 

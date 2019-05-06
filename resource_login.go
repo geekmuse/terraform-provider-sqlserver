@@ -143,10 +143,14 @@ func resourceLoginUpdate(d *schema.ResourceData, meta interface{}) error {
 	defaultDatabase := d.Get("default_database")
 	checkPolicy := d.Get("check_policy")
 	name := d.Get("name")
-	pass := d.Get("password")
+
+	var newpw interface{}
+	if d.HasChange("password") {
+		_, newpw = d.GetChange("password")
+	}
 
 	fmt.Fprintf(&stmt, "USE [master]; ")
-	fmt.Fprintf(&stmt, "ALTER LOGIN [%s] WITH PASSWORD=N'%s'", name, pass)
+	fmt.Fprintf(&stmt, "ALTER LOGIN [%s] WITH PASSWORD=N'%s'", name, newpw)
 	if defaultDatabase != "" {
 		fmt.Fprintf(&stmtOpts, ", DEFAULT_DATABASE=%s", defaultDatabase)
 	}
