@@ -1,15 +1,8 @@
 package main
 
 import (
-	// "errors"
 	"fmt"
-	// "regexp"
-	// "strconv"
 	"strings"
-	// "github.com/hashicorp/terraform/helper/resource"
-	// "github.com/hashicorp/terraform/helper/schema"
-	// "github.com/hashicorp/terraform/helper/structure"
-	// "github.com/hashicorp/terraform/helper/validation"
 )
 
 func validateOnOff(v interface{}, k string) (ws []string, errors []error) {

@@ -3,15 +3,12 @@ package main
 import (
 	"context"
 	"database/sql"
-	// "errors"
 	"fmt"
 	"log"
-	// "net/url"
 
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
-	// "golang.org/x/net/proxy"
 )
 
 type MSSQLConfiguration struct {

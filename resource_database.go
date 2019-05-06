@@ -1,12 +1,10 @@
 package main
 
 import (
-	// "database/sql"
 	"fmt"
 	"log"
 	"strings"
 
-	// "github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
