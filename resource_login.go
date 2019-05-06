@@ -11,41 +11,41 @@ import (
 )
 
 func resourceLogin() *schema.Resource {
-	return &schema.Resource {
+	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
 			"name": {
-				Type:			schema.TypeString,
-				Required:		true,
-				Description:	"Login name",
-				ForceNew:		true,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Login name",
+				ForceNew:    true,
 			},
 			"password": {
-				Type:			schema.TypeString,
-				Required:		true,
-				Description:	"Login password",
-				ForceNew:		false,
-				Sensitive: 		true,
-				StateFunc: 		hashSum,
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Login password",
+				ForceNew:    false,
+				Sensitive:   true,
+				StateFunc:   hashSum,
 			},
 			"default_database": {
-				Type:			schema.TypeString,
-				Required:		false,
-				Optional:		true,
-				Description:	"DEFAULT_DATABASE parameter",
-				ForceNew:		false,
+				Type:        schema.TypeString,
+				Required:    false,
+				Optional:    true,
+				Description: "DEFAULT_DATABASE parameter",
+				ForceNew:    false,
 			},
 			"check_policy": {
-				Type:			schema.TypeString,
-				Required:		false,
-				Optional:		true,
-				Description:	"CHECK_POLICY parameter",
-				ForceNew:		false,
+				Type:        schema.TypeString,
+				Required:    false,
+				Optional:    true,
+				Description: "CHECK_POLICY parameter",
+				ForceNew:    false,
 			},
 		},
-		Read: 		resourceLoginRead,
-		Create:		resourceLoginCreate,
-		Update:		resourceLoginUpdate,
-		Delete:		resourceLoginDelete,
+		Read:   resourceLoginRead,
+		Create: resourceLoginCreate,
+		Update: resourceLoginUpdate,
+		Delete: resourceLoginDelete,
 	}
 }
 
@@ -64,16 +64,16 @@ func resourceLoginCreate(d *schema.ResourceData, meta interface{}) error {
 
 	fmt.Fprintf(&stmt, "USE [master]; ")
 	fmt.Fprintf(&stmt, "CREATE LOGIN [%s] WITH PASSWORD=N'%s'", name, pass)
-	if (defaultDatabase != "") {
+	if defaultDatabase != "" {
 		fmt.Fprintf(&stmtOpts, ", DEFAULT_DATABASE=%s", defaultDatabase)
 	}
-	
-	if (checkPolicy != "") {
+
+	if checkPolicy != "" {
 		fmt.Fprintf(&stmtOpts, ", CHECK_POLICY=%s", checkPolicy)
 	}
-	
+
 	fmt.Fprintf(&stmt, "%s;", stmtOpts.String())
-	
+
 	log.Print(stmt.String())
 
 	s, err := db.Prepare(stmt.String())
@@ -86,7 +86,7 @@ func resourceLoginCreate(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		log.Fatal(err)
 		return err
-	} 
+	}
 
 	d.SetId(name.(string))
 
@@ -126,7 +126,7 @@ func resourceLoginRead(d *schema.ResourceData, meta interface{}) error {
 		resultFound = true
 	}
 
-	if (!resultFound) {
+	if !resultFound {
 		d.SetId("")
 	}
 
@@ -149,16 +149,16 @@ func resourceLoginUpdate(d *schema.ResourceData, meta interface{}) error {
 
 	fmt.Fprintf(&stmt, "USE [master]; ")
 	fmt.Fprintf(&stmt, "ALTER LOGIN [%s] WITH PASSWORD=N'%s'", name, pass)
-	if (defaultDatabase != "") {
+	if defaultDatabase != "" {
 		fmt.Fprintf(&stmtOpts, ", DEFAULT_DATABASE=%s", defaultDatabase)
 	}
-	
-	if (checkPolicy != "") {
+
+	if checkPolicy != "" {
 		fmt.Fprintf(&stmtOpts, ", CHECK_POLICY=%s", checkPolicy)
 	}
-	
+
 	fmt.Fprintf(&stmt, "%s;", stmtOpts.String())
-	
+
 	log.Print(stmt.String())
 
 	s, err := db.Prepare(stmt.String())
@@ -171,7 +171,7 @@ func resourceLoginUpdate(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		log.Fatal(err)
 		return err
-	} 
+	}
 
 	d.SetId(name.(string))
 
@@ -191,7 +191,7 @@ func resourceLoginDelete(d *schema.ResourceData, meta interface{}) error {
 
 	fmt.Fprintf(&stmt, "USE [master]; ")
 	fmt.Fprintf(&stmt, "DROP LOGIN [%s];", name)
-	
+
 	log.Print(stmt.String())
 
 	s, err := db.Prepare(stmt.String())
@@ -204,7 +204,7 @@ func resourceLoginDelete(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		log.Fatal(err)
 		return err
-	} 
+	}
 
 	d.SetId("")
 
